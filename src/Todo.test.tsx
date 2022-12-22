@@ -13,13 +13,14 @@ describe('Todo application', () => {
     expect(screen.getByText('buy some milk')).toBeInTheDocument();
   })
 
-  it('add another item todo to list', () => {
+  it('clean input after item is added', () => {
     render(<Todo />);
 
     const input = screen.getByRole('textbox');
-    userEvent.type(input, 'buy some more milk');
+    userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
-    expect(screen.getByText('buy some more milk')).toBeInTheDocument();
+    expect(screen.getByText('buy some milk')).toBeInTheDocument();
+    expect(input).toHaveValue('');
   })
 })

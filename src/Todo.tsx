@@ -12,6 +12,7 @@ export const Todo = () => {
   const handleKeyDown = (e:KeyboardEvent<HTMLElement>) => {
     if(e.key === 'Enter') {
       setTodos([...todos, todo])
+      setTodo('');
     }
   }
 
