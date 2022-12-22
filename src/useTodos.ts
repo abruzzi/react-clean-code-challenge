@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {TodoType} from "./types";
 
 export const useTodos = () => {
@@ -21,8 +21,18 @@ export const useTodos = () => {
     setTodos(todos.filter(todo => todo.id !== id))
   }
 
+  const completed = useMemo(() => {
+    return todos.filter(todo => todo.completed)
+  }, [todos])
+
+  const active = useMemo(() => {
+    return todos.filter(todo => !todo.completed)
+  }, [todos])
+
   return {
     todos,
+    completed,
+    active,
     addTodo,
     toggleTodo,
     deleteTodo

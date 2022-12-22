@@ -3,7 +3,8 @@ import { TodoItem } from "./TodoItem";
 import { useTodos } from "./useTodos";
 
 export const Todo = () => {
-  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
+  const { todos, completed, active, addTodo, toggleTodo, deleteTodo } =
+    useTodos();
 
   return (
     <div className="container">
@@ -17,6 +18,11 @@ export const Todo = () => {
             onDeleteItem={deleteTodo}
           />
         ))}
+      </div>
+      <div className="aggregation">
+        <span>Total: {todos.length}</span>
+        <span>Completed: {completed.length}</span>
+        <span>Active: {active.length}</span>
       </div>
     </div>
   );
