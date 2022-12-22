@@ -18,13 +18,20 @@ export const Todo = () => {
   return (
     <div className="container">
       <input type="text" value={todo} onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Buy some milk..." />
-      {todos.map(todo =>
-        <div className="todoItem" key={todo}>
-          <span className="material-symbols-outlined">
-          check_box
-          </span>
-          <span className="itemContent">{todo}</span>
-        </div>)}
+      <div className="todos">
+        {todos.map(todo =>
+          <div className="todoItem completed" key={todo}>
+            <span className="material-symbols-outlined">
+            check_circle
+            </span>
+
+            <span className="itemContent">{todo}</span>
+
+            <span className="material-symbols-outlined delete">
+            delete
+            </span>
+          </div>)}
+      </div>
     </div>
   )
 }
