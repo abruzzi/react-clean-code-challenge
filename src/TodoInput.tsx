@@ -10,6 +10,7 @@ export const TodoInput = ({
   const [todo, setTodo] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.metaKey && e.key === "k") {

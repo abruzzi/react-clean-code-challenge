@@ -3,7 +3,7 @@ import { TodoItem } from "./TodoItem";
 import { useTodos } from "./useTodos";
 
 export const Todo = () => {
-  const { displayTodos, todos, completed, active, setFilter, addTodo, toggleTodo, deleteTodo } =
+  const { displayTodos, todos, completed, active, filter, setFilter, addTodo, toggleTodo, deleteTodo } =
     useTodos();
 
   return (
@@ -14,19 +14,19 @@ export const Todo = () => {
         <div role="columnheader">
           Total:{" "}
           <button data-testid="total-filter" onClick={() => setFilter("total")}>
-            <span className="badge">{todos.length}</span>
+            <span className={`badge ${filter === "total" ? "selected" : ""}`}>{todos.length}</span>
           </button>
         </div>
         <div role="columnheader">
           Completed:{" "}
           <button data-testid="total-completed" onClick={() => setFilter("completed")}>
-            <span className="badge">{completed.length}</span>
+            <span className={`badge ${filter === "completed" ? "selected" : ""}`}>{completed.length}</span>
           </button>
         </div>
         <div role="columnheader">
           Active:{" "}
           <button data-testid="total-active" onClick={() => setFilter("active")}>
-            <span className="badge">{active.length}</span>
+            <span className={`badge ${filter === "active" ? "selected" : ""}`}>{active.length}</span>
           </button>
         </div>
       </div>

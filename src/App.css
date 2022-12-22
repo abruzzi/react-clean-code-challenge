@@ -113,7 +113,7 @@ body {
 }
 
 .todos {
-  margin-block: 2rem;
+  margin-block: 1rem;
 }
 
 .aggregation {
@@ -131,18 +131,28 @@ body {
   background-color: transparent;
 }
 
-.light .aggregation .badge {
-  background-color: #dddddd;
-}
-
-.dark .aggregation .badge {
-  background-color: #777777;
-}
-
 .aggregation .badge {
   padding-inline: 0.4rem;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.light .aggregation .badge {
+  background-color: #dddddd;
+  color: var(--light-text-color);
+}
+
+.light .aggregation .selected {
+  background-color: bisque;
+}
+
+.dark .aggregation .badge {
+  background-color: #777777;
+  color: var(--dark-text-color);
+}
+
+.dark .aggregation .selected {
+  background-color: #111111;
 }
 
 .todoItem {
@@ -175,15 +185,23 @@ body {
   align-items: center;
 }
 
-.dark .complete span {
+.dark .complete .delete {
   color: var(--dark-text-completed-color);
 }
 
-.dark .complete span.toggleIcon {
+.dark .toggleIcon {
+  color: var(--dark-text-color);
+}
+
+.light .toggleIcon {
+  color: var(--light-text-color);
+}
+
+.dark .complete .toggleIcon {
   color: olivedrab;
 }
 
-.light .complete span.toggleIcon {
+.light .complete .toggleIcon {
   color: lightseagreen;
 }
 
