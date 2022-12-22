@@ -1,36 +1,36 @@
-import {useMemo, useState} from "react";
-import {TodoType} from "./types";
-
-type FilterType = "total" | "completed" | "active";
+import { useMemo, useState } from "react";
+import { FilterType, TodoType } from "./types";
 
 export const useTodos = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
-  const [filter, setFilter] = useState<FilterType>('total');
+  const [filter, setFilter] = useState<FilterType>("total");
 
   const toggleTodo = (id: string) => {
-    setTodos(todos.map(todo => {
-      if (todo.id === id) {
-        return {...todo, completed: !todo.completed}
-      }
-      return todo;
-    }))
-  }
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      })
+    );
+  };
 
   const addTodo = (todo: TodoType) => {
     setTodos([...todos, todo]);
-  }
+  };
 
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  }
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
   const completed = useMemo(() => {
-    return todos.filter(todo => todo.completed)
-  }, [todos])
+    return todos.filter((todo) => todo.completed);
+  }, [todos]);
 
   const active = useMemo(() => {
-    return todos.filter(todo => !todo.completed)
-  }, [todos])
+    return todos.filter((todo) => !todo.completed);
+  }, [todos]);
 
   const displayTodos = useMemo(() => {
     switch (filter) {
@@ -47,17 +47,24 @@ export const useTodos = () => {
         return todos;
       }
     }
-  }, [active, completed, filter, todos])
+  }, [active, completed, filter, todos]);
+
+  const aggregation = useMemo(
+    () => [
+      { filter: "total", count: todos.length },
+      { filter: "completed", count: completed.length },
+      { filter: "active", count: active.length },
+    ],
+    [todos, completed, active]
+  );
 
   return {
     displayTodos,
-    todos,
-    completed,
-    active,
     filter,
+    aggregation,
     setFilter,
     addTodo,
     toggleTodo,
-    deleteTodo
-  }
-}
+    deleteTodo,
+  };
+};

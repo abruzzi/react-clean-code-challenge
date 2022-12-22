@@ -128,7 +128,7 @@ describe('Todo application', () => {
     const active = screen.getByRole('columnheader', {name: /Active/i});
     expect(active).toHaveTextContent("1");
 
-    userEvent.click(screen.getByTestId('total-active'));
+    userEvent.click(screen.getByTestId('active-count'));
     const todos = screen.getAllByTestId('todo-item-container');
     expect(todos.length).toEqual(1);
   })

@@ -1,34 +1,34 @@
 import { TodoInput } from "./TodoInput";
 import { TodoItem } from "./TodoItem";
 import { useTodos } from "./useTodos";
+import {FilterType} from "./types";
+
+const capitalise = (s: string) => s[0].toUpperCase() + s.substring(1, s.length).toLowerCase();
+
+const createTab = (filter: string, selected: string, count: number, setFilter: () => void) => {
+  return (
+    <div role="columnheader" key={filter}>
+      <label>{capitalise(filter)}: </label>
+      <button data-testid={`${filter}-count`} onClick={setFilter}>
+        <span className={`badge ${filter === selected ? "selected" : ""}`}>{count}</span>
+      </button>
+    </div>
+  )
+}
 
 export const Todo = () => {
-  const { displayTodos, todos, completed, active, filter, setFilter, addTodo, toggleTodo, deleteTodo } =
+  const { displayTodos, filter, aggregation, setFilter, addTodo, toggleTodo, deleteTodo } =
     useTodos();
 
   return (
     <div className="container">
       <TodoInput onItemAdded={addTodo} />
-
       <div className="aggregation">
-        <div role="columnheader">
-          Total:{" "}
-          <button data-testid="total-filter" onClick={() => setFilter("total")}>
-            <span className={`badge ${filter === "total" ? "selected" : ""}`}>{todos.length}</span>
-          </button>
-        </div>
-        <div role="columnheader">
-          Completed:{" "}
-          <button data-testid="total-completed" onClick={() => setFilter("completed")}>
-            <span className={`badge ${filter === "completed" ? "selected" : ""}`}>{completed.length}</span>
-          </button>
-        </div>
-        <div role="columnheader">
-          Active:{" "}
-          <button data-testid="total-active" onClick={() => setFilter("active")}>
-            <span className={`badge ${filter === "active" ? "selected" : ""}`}>{active.length}</span>
-          </button>
-        </div>
+        {
+          aggregation.map(agg => {
+            return createTab(agg.filter, filter, agg.count, () => setFilter(agg.filter as FilterType))
+          })
+        }
       </div>
 
       <div className="todos">

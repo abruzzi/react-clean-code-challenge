@@ -3,3 +3,4 @@ export type TodoType = {
   content: string;
   completed: boolean;
 }
+export type FilterType = "total" | "completed" | "active";
