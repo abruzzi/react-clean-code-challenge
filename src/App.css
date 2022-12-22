@@ -125,6 +125,12 @@ body {
   font-family: 'Hanken Grotesk', sans-serif;
 }
 
+.aggregation button {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+}
+
 .light .aggregation .badge {
   background-color: #dddddd;
 }

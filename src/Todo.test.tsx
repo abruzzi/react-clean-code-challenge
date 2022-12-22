@@ -102,4 +102,34 @@ describe('Todo application', () => {
     expect(screen.getByRole('columnheader', {name: /Completed/i})).toHaveTextContent("1");
     expect(screen.getByRole('columnheader', {name: /Active/i})).toHaveTextContent("1");
   })
+
+  it('only show active items when selected', () => {
+    render(<Todo />);
+
+    const input = screen.getByRole('textbox');
+    userEvent.type(input, 'buy some milk');
+    userEvent.type(input, '{enter}')
+
+    userEvent.type(input, 'buy some more milk');
+    userEvent.type(input, '{enter}')
+
+
+    const item = screen.getByText('buy some milk');
+    expect(item).toBeInTheDocument();
+
+    userEvent.click(item);
+
+    const total = screen.getByRole('columnheader', {name: /Total/i});
+    expect(total).toHaveTextContent("2");
+
+    const completed = screen.getByRole('columnheader', {name: /Completed/i});
+    expect(completed).toHaveTextContent("1");
+
+    const active = screen.getByRole('columnheader', {name: /Active/i});
+    expect(active).toHaveTextContent("1");
+
+    userEvent.click(screen.getByTestId('total-active'));
+    const todos = screen.getAllByTestId('todo-item-container');
+    expect(todos.length).toEqual(1);
+  })
 })
