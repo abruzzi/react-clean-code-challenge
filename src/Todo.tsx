@@ -1,8 +1,15 @@
 import {KeyboardEvent, ChangeEvent, useState} from "react";
+import {v4 as uuid} from 'uuid';
+
+type TodoType = {
+  id: string;
+  content: string;
+  completed: boolean;
+}
 
 export const Todo = () => {
   const [todo, setTodo] = useState<string>('');
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<TodoType[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -11,9 +18,19 @@ export const Todo = () => {
 
   const handleKeyDown = (e:KeyboardEvent<HTMLElement>) => {
     if(e.key === 'Enter') {
-      setTodos([...todos, todo])
+      const id = uuid();
+      setTodos([...todos, {id: id, content: todo, completed: false}])
       setTodo('');
     }
+  }
+
+  const onClickItem = (id: string) => {
+    setTodos(todos.map(todo => {
+      if(todo.id === id) {
+        return {...todo, completed: true}
+      }
+      return todo;
+    }))
   }
 
   return (
@@ -21,12 +38,12 @@ export const Todo = () => {
       <input type="text" value={todo} onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Buy some milk..." />
       <div className="todos">
         {todos.map(todo =>
-          <div className="todoItem completed" key={todo}>
+          <div className={`todoItem ${todo.completed}`} key={todo.id} onClick={() => onClickItem(todo.id)}>
             <span className="material-symbols-outlined">
             check_circle
             </span>
 
-            <span className="itemContent">{todo}</span>
+            <span className="itemContent" data-completed={todo.completed ? todo.completed : undefined}>{todo.content}</span>
 
             <span className="material-symbols-outlined delete">
             delete
