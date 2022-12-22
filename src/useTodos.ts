@@ -4,7 +4,7 @@ import {TodoType} from "./types";
 export const useTodos = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const onToggleItem = (id: string) => {
+  const toggleTodo = (id: string) => {
     setTodos(todos.map(todo => {
       if (todo.id === id) {
         return {...todo, completed: !todo.completed}
@@ -13,13 +13,18 @@ export const useTodos = () => {
     }))
   }
 
-  const onItemAdded = (todo: TodoType) => {
+  const addTodo = (todo: TodoType) => {
     setTodos([...todos, todo]);
+  }
+
+  const deleteTodo = (id: string) => {
+    setTodos(todos.filter(todo => todo.id !== id))
   }
 
   return {
     todos,
-    addTodo: onItemAdded,
-    toggleTodo: onToggleItem
+    addTodo,
+    toggleTodo,
+    deleteTodo
   }
 }

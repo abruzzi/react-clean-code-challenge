@@ -11,7 +11,7 @@ export const TodoInput = ({onItemAdded}: { onItemAdded: (todo: TodoType) => void
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && todo.length !== 0) {
       const id = uuid();
       onItemAdded({id: id, content: todo, completed: false})
       setTodo('');

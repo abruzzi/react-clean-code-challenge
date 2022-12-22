@@ -124,6 +124,13 @@ body {
   cursor: pointer;
 }
 
+.todoItemContent {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+}
+
 .dark .todoItem {
   border: 1px solid var(--dark-border-color);
   box-shadow: 1px 1px 4px -2px rgb(0 0 0 / 20%);
@@ -146,6 +153,10 @@ body {
 
 .light .complete span {
   color: var(--light-text-completed-color);
+}
+
+.itemContent {
+  width: 100%;
 }
 
 .complete .itemContent {
