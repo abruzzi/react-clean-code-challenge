@@ -27,7 +27,7 @@ export const Todo = () => {
   const onClickItem = (id: string) => {
     setTodos(todos.map(todo => {
       if(todo.id === id) {
-        return {...todo, completed: true}
+        return {...todo, completed: !todo.completed}
       }
       return todo;
     }))

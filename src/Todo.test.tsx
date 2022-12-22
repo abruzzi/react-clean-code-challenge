@@ -38,14 +38,12 @@ describe('Todo application', () => {
     expect(item).toHaveAttribute('data-completed');
   })
 
-  it('mark the correct item as completed', () => {
+
+  it('click to toggle', () => {
     render(<Todo />);
 
     const input = screen.getByRole('textbox');
     userEvent.type(input, 'buy some milk');
-    userEvent.type(input, '{enter}')
-
-    userEvent.type(input, 'buy some more milk');
     userEvent.type(input, '{enter}')
 
     const item = screen.getByText('buy some milk');
@@ -54,8 +52,8 @@ describe('Todo application', () => {
     userEvent.click(item);
     expect(item).toHaveAttribute('data-completed');
 
-    const anotherItem = screen.getByText('buy some more milk');
-    expect(anotherItem).toBeInTheDocument();
-    expect(anotherItem).not.toHaveAttribute('data-completed');
+    userEvent.click(item);
+    expect(item).not.toHaveAttribute('data-completed');
   })
+
 })
