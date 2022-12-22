@@ -140,16 +140,20 @@ body {
   align-items: center;
 }
 
-.dark .completed span {
+.dark .complete span {
   color: var(--dark-text-completed-color);
 }
 
-.light .completed span {
+.light .complete span {
   color: var(--light-text-completed-color);
 }
 
-.itemContent {
+.complete .itemContent {
   text-decoration: line-through;
+}
+
+.incomplete .itemContent {
+  text-decoration: none;
 }
 
 .delete {
@@ -165,9 +169,7 @@ body {
 }
 
 /*
-<span class="material-symbols-outlined">
-radio_button_unchecked
-</span>
+
  */
 
 .dark {

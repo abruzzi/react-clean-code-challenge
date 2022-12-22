@@ -38,11 +38,21 @@ export const Todo = () => {
       <input type="text" value={todo} onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Buy some milk..." />
       <div className="todos">
         {todos.map(todo =>
-          <div className={`todoItem ${todo.completed}`} key={todo.id} onClick={() => onClickItem(todo.id)}>
-            <span className="material-symbols-outlined">
-            check_circle
-            </span>
-
+          <div className={`todoItem ${todo.completed ? "complete" : "incomplete"}`} key={todo.id} onClick={() => onClickItem(todo.id)}>
+            {
+              todo.completed ?
+                (
+                  <span className="material-symbols-outlined">
+                  check_circle
+                  </span>
+                ):
+                (
+                  <span className="material-symbols-outlined">
+                  radio_button_unchecked
+                  </span>
+                )
+            }
+            
             <span className="itemContent" data-completed={todo.completed ? todo.completed : undefined}>{todo.content}</span>
 
             <span className="material-symbols-outlined delete">
