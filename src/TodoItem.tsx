@@ -16,7 +16,7 @@ export const TodoItem = ({
     >
       <div className="todoItemContent" onClick={() => onToggleItem(todo.id)}>
         <span className="material-symbols-outlined">
-          {todo.completed ? "check_circle" : "radio_button_unchecked"}
+          {todo.completed ? "task_alt" : "radio_button_unchecked"}
         </span>
 
         <span
