@@ -97,8 +97,9 @@ describe('Todo application', () => {
 
     userEvent.click(item);
 
-    expect(screen.getByText('Total: 2')).toBeInTheDocument();
-    expect(screen.getByText('Completed: 1')).toBeInTheDocument();
-    expect(screen.getByText('Active: 1')).toBeInTheDocument();
+
+    expect(screen.getByRole('columnheader', {name: /Total/i})).toHaveTextContent("2");
+    expect(screen.getByRole('columnheader', {name: /Completed/i})).toHaveTextContent("1");
+    expect(screen.getByRole('columnheader', {name: /Active/i})).toHaveTextContent("1");
   })
 })

@@ -11,13 +11,13 @@ export const Todo = () => {
       <TodoInput onItemAdded={addTodo} />
 
       <div className="aggregation">
-        <div>
+        <div role="columnheader">
           Total: <span className="badge">{todos.length}</span>
         </div>
-        <div>
+        <div role="columnheader">
           Completed: <span className="badge">{completed.length}</span>
         </div>
-        <div>
+        <div role="columnheader">
           Active: <span className="badge">{active.length}</span>
         </div>
       </div>
