@@ -9,6 +9,19 @@ export const Todo = () => {
   return (
     <div className="container">
       <TodoInput onItemAdded={addTodo} />
+
+      <div className="aggregation">
+        <div>
+          Total: <span className="badge">{todos.length}</span>
+        </div>
+        <div>
+          Completed: <span className="badge">{completed.length}</span>
+        </div>
+        <div>
+          Active: <span className="badge">{active.length}</span>
+        </div>
+      </div>
+
       <div className="todos">
         {todos.map((todo) => (
           <TodoItem
@@ -18,11 +31,6 @@ export const Todo = () => {
             onDeleteItem={deleteTodo}
           />
         ))}
-      </div>
-      <div className="aggregation">
-        <span>Total: {todos.length}</span>
-        <span>Completed: {completed.length}</span>
-        <span>Active: {active.length}</span>
       </div>
     </div>
   );

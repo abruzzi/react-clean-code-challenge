@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import {Todo} from "./Todo";
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { Todo } from "./Todo";
 
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
+    if (theme === "light") {
+      setTheme("dark");
     } else {
-      setTheme('light');
+      setTheme("light");
     }
   };
 
@@ -20,13 +20,15 @@ function App() {
   return (
     <div className="app">
       <div className="headingContainer">
-        <h1>
-          todos
-        </h1>
+        <h1>todos</h1>
 
-        <span className="material-symbols-outlined themeControl" onClick={toggleTheme}>
-        lightbulb
-        </span>
+        <button onClick={toggleTheme}>
+          <span
+            className="material-symbols-outlined themeControl"
+          >
+            {theme === "light" ? "dark_mode" : "light_mode"}
+          </span>
+        </button>
       </div>
       <Todo />
     </div>

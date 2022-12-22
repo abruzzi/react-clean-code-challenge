@@ -15,9 +15,11 @@ export const TodoItem = ({
       data-testid="todo-item-container"
     >
       <div className="todoItemContent" onClick={() => onToggleItem(todo.id)}>
-        <span className="material-symbols-outlined">
-          {todo.completed ? "task_alt" : "radio_button_unchecked"}
-        </span>
+        <button>
+          <span className="material-symbols-outlined toggleIcon">
+            {todo.completed ? "task_alt" : "radio_button_unchecked"}
+          </span>
+        </button>
 
         <span
           className="itemContent"
@@ -28,13 +30,14 @@ export const TodoItem = ({
         </span>
       </div>
 
-      <span
-        className="material-symbols-outlined delete"
-        data-testid="delete"
-        onClick={() => onDeleteItem(todo.id)}
-      >
-        delete
-      </span>
+      <button onClick={() => onDeleteItem(todo.id)}>
+        <span
+          className="material-symbols-outlined delete"
+          data-testid="delete"
+        >
+          delete
+        </span>
+      </button>
     </div>
   );
 };
