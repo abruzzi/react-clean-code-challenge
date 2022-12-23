@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { FilterType, TodoType } from "./types";
 
-export const useTodos = () => {
-  const [todos, setTodos] = useState<TodoType[]>([]);
+export const useTodos = (providedTodos: TodoType[] = []) => {
+  const [todos, setTodos] = useState<TodoType[]>(providedTodos);
   const [filter, setFilter] = useState<FilterType>("total");
 
   const toggleTodo = (id: string) => {

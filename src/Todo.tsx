@@ -1,7 +1,7 @@
 import { TodoInput } from "./TodoInput";
 import { TodoItem } from "./TodoItem";
 import { useTodos } from "./useTodos";
-import {FilterType} from "./types";
+import {FilterType, TodoType} from "./types";
 
 const capitalise = (s: string) => s[0].toUpperCase() + s.substring(1, s.length).toLowerCase();
 
@@ -16,9 +16,9 @@ const createTab = (filter: string, selected: string, count: number, setFilter: (
   )
 }
 
-export const Todo = () => {
+export const Todo = ({todos}: {todos?: TodoType[]}) => {
   const { displayTodos, filter, aggregation, setFilter, addTodo, toggleTodo, deleteTodo } =
-    useTodos();
+    useTodos(todos);
 
   return (
     <div className="container">

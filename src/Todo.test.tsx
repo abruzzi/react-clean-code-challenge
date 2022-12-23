@@ -1,6 +1,7 @@
 import {render, screen, within} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {Todo} from "./Todo";
+import {TodoType} from "./types";
 
 describe('Todo application', () => {
   it('add a todo to list', () => {
@@ -131,5 +132,25 @@ describe('Todo application', () => {
     userEvent.click(screen.getByTestId('active-count'));
     const todos = screen.getAllByTestId('todo-item-container');
     expect(todos.length).toEqual(1);
+  })
+
+  it('renders some tasks if provided', () => {
+    const todos: TodoType[] = [
+      {
+        id: '1',
+        content: "buy some milk",
+        completed: false
+      },
+      {
+        id: '2',
+        content: "buy some orange",
+        completed: false
+      }
+    ];
+
+    render(<Todo todos={todos} />);
+
+    expect(screen.getByText('buy some milk')).toBeInTheDocument();
+    expect(screen.getByText('buy some orange')).toBeInTheDocument();
   })
 })
