@@ -1,63 +1,9 @@
 import { useMemo, useReducer } from "react";
 import { CategoryType, TodoType } from "./types";
-
-type StateType = {
-  todos: TodoType[];
-  category: CategoryType;
-  query: string;
-};
-
-type Action = {
-  type: string;
-  payload: any;
-};
-
-const todoReducer = (state: StateType, action: Action) => {
-  switch (action.type) {
-    case "ADD": {
-      return {
-        ...state,
-        todos: [...state.todos, action.payload],
-      };
-    }
-    case "DELETE": {
-      return {
-        ...state,
-        todos: state.todos.filter(
-          (todo: TodoType) => todo.id !== action.payload.id
-        ),
-      };
-    }
-    case "TOGGLE": {
-      return {
-        ...state,
-        todos: state.todos.map((todo) => {
-          if (todo.id === action.payload.id) {
-            return { ...todo, completed: !todo.completed };
-          }
-          return todo;
-        }),
-      };
-    }
-    case "SET_CATEGORY": {
-      return {
-        ...state,
-        category: action.payload.category,
-      };
-    }
-    case "SET_QUERY": {
-      return {
-        ...state,
-        query: action.payload.query,
-      };
-    }
-    default:
-      return state;
-  }
-};
+import { todoReducer } from "./todoReducer";
 
 export const useTodos = (providedTodos: TodoType[] = []) => {
-  const [state, dispatch] = useReducer(todoReducer, {
+  const [{ todos, query, category }, dispatch] = useReducer(todoReducer, {
     todos: providedTodos,
     category: "total",
     query: "",
@@ -79,33 +25,33 @@ export const useTodos = (providedTodos: TodoType[] = []) => {
     dispatch({ type: "SET_CATEGORY", payload: { category: category } });
   };
 
+  const search = (query: string) => {
+    dispatch({ type: "SET_QUERY", payload: { query: query } });
+  };
+
   const total = useMemo(() => {
-    return state.todos;
-  }, [state.todos]);
+    return todos;
+  }, [todos]);
 
   const completed = useMemo(() => {
-    return state.todos.filter((todo: TodoType) => todo.completed);
-  }, [state.todos]);
+    return todos.filter((todo: TodoType) => todo.completed);
+  }, [todos]);
 
   const active = useMemo(() => {
-    return state.todos.filter((todo: TodoType) => !todo.completed);
-  }, [state.todos]);
-
-  const category = useMemo(() => {
-    return state.category;
-  }, [state.category]);
+    return todos.filter((todo: TodoType) => !todo.completed);
+  }, [todos]);
 
   const aggregation = useMemo(
     () => [
-      { category: "total", count: total.length },
+      { category: "total", count: todos.length },
       { category: "completed", count: completed.length },
       { category: "active", count: active.length },
     ],
-    [total, completed, active]
+    [todos, completed, active]
   );
 
   const filteredList = useMemo(() => {
-    switch (state.category) {
+    switch (category) {
       case "total": {
         return total;
       }
@@ -119,15 +65,13 @@ export const useTodos = (providedTodos: TodoType[] = []) => {
         return total;
       }
     }
-  }, [active, completed, state.category, total]);
-
-  const search = (query: string) => {
-    dispatch({ type: "SET_QUERY", payload: { query: query } });
-  };
+  }, [active, completed, category, total]);
 
   const displayTodos = useMemo(() => {
-    return filteredList.filter((todo: TodoType) => todo.content.includes(state.query));
-  }, [filteredList, state.query]);
+    return filteredList.filter((todo: TodoType) =>
+      todo.content.includes(query)
+    );
+  }, [filteredList, query]);
 
   return {
     displayTodos,
