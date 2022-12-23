@@ -1,83 +1,140 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
-import { FilterType, TodoType } from "./types";
+import { useMemo, useReducer } from "react";
+import { CategoryType, TodoType } from "./types";
+
+type StateType = {
+  todos: TodoType[];
+  category: CategoryType;
+  query: string;
+};
+
+type Action = {
+  type: string;
+  payload: any;
+};
+
+const todoReducer = (state: StateType, action: Action) => {
+  switch (action.type) {
+    case "ADD": {
+      return {
+        ...state,
+        todos: [...state.todos, action.payload],
+      };
+    }
+    case "DELETE": {
+      return {
+        ...state,
+        todos: state.todos.filter(
+          (todo: TodoType) => todo.id !== action.payload.id
+        ),
+      };
+    }
+    case "TOGGLE": {
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return { ...todo, completed: !todo.completed };
+          }
+          return todo;
+        }),
+      };
+    }
+    case "SET_CATEGORY": {
+      return {
+        ...state,
+        category: action.payload.category,
+      };
+    }
+    case "SET_QUERY": {
+      return {
+        ...state,
+        query: action.payload.query,
+      };
+    }
+    default:
+      return state;
+  }
+};
 
 export const useTodos = (providedTodos: TodoType[] = []) => {
-  const [todos, setTodos] = useState<TodoType[]>(providedTodos);
-  const [filter, setFilter] = useState<FilterType>("total");
-  const [term, setTerm] = useState<string>('');
-  const [displayTodos, setDisplayTodos] = useState<TodoType[]>(providedTodos);
+  const [state, dispatch] = useReducer(todoReducer, {
+    todos: providedTodos,
+    category: "total",
+    query: "",
+  });
 
   const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, completed: !todo.completed };
-        }
-        return todo;
-      })
-    );
+    dispatch({ type: "TOGGLE", payload: { id } });
   };
 
   const addTodo = (todo: TodoType) => {
-    setTodos([...todos, todo]);
+    dispatch({ type: "ADD", payload: todo });
   };
 
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    dispatch({ type: "DELETE", payload: { id: id } });
   };
 
+  const setCategory = (category: CategoryType) => {
+    dispatch({ type: "SET_CATEGORY", payload: { category: category } });
+  };
+
+  const total = useMemo(() => {
+    return state.todos;
+  }, [state.todos]);
+
   const completed = useMemo(() => {
-    return todos.filter((todo) => todo.completed);
-  }, [todos]);
+    return state.todos.filter((todo: TodoType) => todo.completed);
+  }, [state.todos]);
 
   const active = useMemo(() => {
-    return todos.filter((todo) => !todo.completed);
-  }, [todos]);
+    return state.todos.filter((todo: TodoType) => !todo.completed);
+  }, [state.todos]);
+
+  const category = useMemo(() => {
+    return state.category;
+  }, [state.category]);
 
   const aggregation = useMemo(
     () => [
-      { filter: "total", count: todos.length },
-      { filter: "completed", count: completed.length },
-      { filter: "active", count: active.length },
+      { category: "total", count: total.length },
+      { category: "completed", count: completed.length },
+      { category: "active", count: active.length },
     ],
-    [todos, completed, active]
+    [total, completed, active]
   );
 
-  const search = useCallback((term: string) => {
-    let list;
-    switch (filter) {
+  const filteredList = useMemo(() => {
+    switch (state.category) {
       case "total": {
-        list = todos;
-        break;
+        return total;
       }
       case "completed": {
-        list = completed;
-        break;
+        return completed;
       }
       case "active": {
-        list = active;
-        break;
+        return active;
       }
       default: {
-        list = todos;
+        return total;
       }
     }
+  }, [active, completed, state.category, total]);
 
-    return list.filter(todo => todo.content.includes(term))
-  }, [active, completed, filter, todos])
+  const search = (query: string) => {
+    dispatch({ type: "SET_QUERY", payload: { query: query } });
+  };
 
-
-  useEffect(() => {
-    setDisplayTodos(search(term))
-  }, [search, term])
+  const displayTodos = useMemo(() => {
+    return filteredList.filter((todo: TodoType) => todo.content.includes(state.query));
+  }, [filteredList, state.query]);
 
   return {
     displayTodos,
-    filter,
+    category,
     aggregation,
     search,
-    setFilter,
-    setTerm,
+    setCategory,
     addTodo,
     toggleTodo,
     deleteTodo,

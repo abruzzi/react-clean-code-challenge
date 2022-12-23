@@ -1,29 +1,29 @@
 import { TodoInput } from "./TodoInput";
 import { TodoItem } from "./TodoItem";
 import { useTodos } from "./useTodos";
-import {FilterType, TodoType} from "./types";
-import {ChangeEvent, useState} from "react";
+import {CategoryType, TodoType} from "./types";
+import {ChangeEvent} from "react";
 
 const capitalise = (s: string) => s[0].toUpperCase() + s.substring(1, s.length).toLowerCase();
 
-const createTab = (filter: string, selected: string, count: number, setFilter: () => void) => {
+const createCategoryTab = (category: string, selected: string, count: number, setCategory: () => void) => {
   return (
-    <div role="columnheader" key={filter}>
-      <label>{capitalise(filter)}: </label>
-      <button data-testid={`${filter}-count`} onClick={setFilter}>
-        <span className={`badge ${filter === selected ? "selected" : ""}`}>{count}</span>
+    <div role="columnheader" key={category}>
+      <label>{capitalise(category)}: </label>
+      <button data-testid={`${category}-count`} onClick={setCategory}>
+        <span className={`badge ${category === selected ? "selected" : ""}`}>{count}</span>
       </button>
     </div>
   )
 }
 
 export const Todo = ({todos}: {todos?: TodoType[]}) => {
-  const { displayTodos, filter, aggregation, setTerm, setFilter, addTodo, toggleTodo, deleteTodo } =
+  const { displayTodos, category, aggregation, search, setCategory, addTodo, toggleTodo, deleteTodo } =
     useTodos(todos);
 
   const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
-    setTerm(term);
+    search(term);
   }
 
   return (
@@ -32,7 +32,7 @@ export const Todo = ({todos}: {todos?: TodoType[]}) => {
       <div className="aggregation">
         {
           aggregation.map(agg => {
-            return createTab(agg.filter, filter, agg.count, () => setFilter(agg.filter as FilterType))
+            return createCategoryTab(agg.category, category, agg.count, () => setCategory(agg.category as CategoryType))
           })
         }
       </div>
