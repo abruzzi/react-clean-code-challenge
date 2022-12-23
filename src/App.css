@@ -64,6 +64,10 @@ body {
   background-color: var(--light-bg-color);
 }
 
+.themeSwitch {
+  display: flex;
+}
+
 .themeControl {
   cursor: pointer;
 }

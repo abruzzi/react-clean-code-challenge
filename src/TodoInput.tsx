@@ -41,6 +41,7 @@ export const TodoInput = ({
 
   return (
     <input
+      data-testid="add-new-todo"
       ref={inputRef}
       type="text"
       value={todo}

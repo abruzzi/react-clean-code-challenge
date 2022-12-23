@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import { FilterType, TodoType } from "./types";
 
 export const useTodos = (providedTodos: TodoType[] = []) => {
   const [todos, setTodos] = useState<TodoType[]>(providedTodos);
   const [filter, setFilter] = useState<FilterType>("total");
+  const [term, setTerm] = useState<string>('');
+  const [displayTodos, setDisplayTodos] = useState<TodoType[]>(providedTodos);
 
   const toggleTodo = (id: string) => {
     setTodos(
@@ -32,23 +34,6 @@ export const useTodos = (providedTodos: TodoType[] = []) => {
     return todos.filter((todo) => !todo.completed);
   }, [todos]);
 
-  const displayTodos = useMemo(() => {
-    switch (filter) {
-      case "total": {
-        return todos;
-      }
-      case "completed": {
-        return completed;
-      }
-      case "active": {
-        return active;
-      }
-      default: {
-        return todos;
-      }
-    }
-  }, [active, completed, filter, todos]);
-
   const aggregation = useMemo(
     () => [
       { filter: "total", count: todos.length },
@@ -58,11 +43,41 @@ export const useTodos = (providedTodos: TodoType[] = []) => {
     [todos, completed, active]
   );
 
+  const search = useCallback((term: string) => {
+    let list;
+    switch (filter) {
+      case "total": {
+        list = todos;
+        break;
+      }
+      case "completed": {
+        list = completed;
+        break;
+      }
+      case "active": {
+        list = active;
+        break;
+      }
+      default: {
+        list = todos;
+      }
+    }
+
+    return list.filter(todo => todo.content.includes(term))
+  }, [active, completed, filter, todos])
+
+
+  useEffect(() => {
+    setDisplayTodos(search(term))
+  }, [search, term])
+
   return {
     displayTodos,
     filter,
     aggregation,
+    search,
     setFilter,
+    setTerm,
     addTodo,
     toggleTodo,
     deleteTodo,

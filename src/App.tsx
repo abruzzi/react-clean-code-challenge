@@ -1,6 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Todo } from "./Todo";
+import {TodoType} from "./types";
+
+const todos: TodoType[] = [
+  {
+    id: '1',
+    content: "buy some milk",
+    completed: false
+  },
+  {
+    id: '2',
+    content: "buy some orange",
+    completed: true
+  },
+  {
+    id: '3',
+    content: "rewrite react code",
+    completed: true
+  },
+  {
+    id: '4',
+    content: "rewrite react network request article",
+    completed: false
+  }
+]
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -22,7 +46,7 @@ function App() {
       <div className="headingContainer">
         <h1>todos</h1>
 
-        <button onClick={toggleTheme}>
+        <button className="themeSwitch" onClick={toggleTheme}>
           <span
             className="material-symbols-outlined themeControl"
           >
@@ -30,7 +54,7 @@ function App() {
           </span>
         </button>
       </div>
-      <Todo />
+      <Todo todos={todos} />
     </div>
   );
 }

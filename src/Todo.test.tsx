@@ -7,7 +7,7 @@ describe('Todo application', () => {
   it('add a todo to list', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -17,7 +17,7 @@ describe('Todo application', () => {
   it('clean input after item is added', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -28,7 +28,7 @@ describe('Todo application', () => {
   it('does not add item if the content is empty', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, '{enter}')
 
     expect(screen.queryByTestId('content')).not.toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('Todo application', () => {
   it('mark item as completed', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -52,7 +52,7 @@ describe('Todo application', () => {
   it('click to toggle', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -69,7 +69,7 @@ describe('Todo application', () => {
   it('delete item by click the button', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -85,7 +85,7 @@ describe('Todo application', () => {
   it('shows agg info for the todo list', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -107,7 +107,7 @@ describe('Todo application', () => {
   it('only show active items when selected', () => {
     render(<Todo />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('add-new-todo');
     userEvent.type(input, 'buy some milk');
     userEvent.type(input, '{enter}')
 
@@ -152,5 +152,28 @@ describe('Todo application', () => {
 
     expect(screen.getByText('buy some milk')).toBeInTheDocument();
     expect(screen.getByText('buy some orange')).toBeInTheDocument();
+  })
+
+  it('search for items I wanted', () => {
+    const todos: TodoType[] = [
+      {
+        id: '1',
+        content: "buy some milk",
+        completed: false
+      },
+      {
+        id: '2',
+        content: "buy some orange",
+        completed: false
+      }
+    ];
+
+    render(<Todo todos={todos} />);
+
+    const searchBox = screen.getByTestId('search-box');
+    userEvent.type(searchBox, 'orange');
+
+    expect(screen.getByText('buy some orange')).toBeInTheDocument();
+    expect(screen.queryByText('buy some milk')).not.toBeInTheDocument();
   })
 })
