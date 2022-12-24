@@ -1,4 +1,22 @@
+import { motion } from "framer-motion";
 import { TodoType } from "./types";
+
+const variants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      delay: 10,
+      duration: 10
+    }
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 10,
+      duration: 10
+    }
+  }
+}
 
 export const TodoItem = ({
   todo,
@@ -10,7 +28,12 @@ export const TodoItem = ({
   onDeleteItem: (id: string) => void;
 }) => {
   return (
-    <div
+    <motion.div
+      initial='visible'
+      animate='visible'
+      exit='hidden'
+      variants={variants}
+      layoutId={todo.id}
       className={`todoItem ${todo.completed ? "complete" : "incomplete"}`}
       data-testid="todo-item-container"
     >
@@ -38,6 +61,6 @@ export const TodoItem = ({
           delete
         </span>
       </button>
-    </div>
+    </motion.div>
   );
 };

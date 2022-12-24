@@ -16,7 +16,7 @@ export const todoReducer = (state: StateType, action: Action) => {
     case "ADD": {
       return {
         ...state,
-        todos: [...state.todos, action.payload],
+        todos: [action.payload, ...state.todos],
       };
     }
     case "DELETE": {
