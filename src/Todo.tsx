@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 type TodoItem = {
   id: string;
   content: string;
+  completed: boolean;
 };
 
 const TodoInput = ({
@@ -20,7 +21,7 @@ const TodoInput = ({
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
       const id = uuid();
-      onItemAdded({ id, content });
+      onItemAdded({ id, content, completed: false });
     }
   };
 
@@ -35,18 +36,36 @@ const TodoInput = ({
   );
 };
 
+
 export function Todo() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   const onItemAdded = (todo: TodoItem) => {
-    setTodos([todo, ...todos])
-  }
+    setTodos([todo, ...todos]);
+  };
+
+  const handleClick = (id: string) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+
+    setTodos(updatedTodos);
+  };
 
   return (
     <div>
       <TodoInput onItemAdded={onItemAdded} />
       {todos.map((todo) => (
-        <div key={todo.id}>{todo.content}</div>
+        <div
+          key={todo.id}
+          onClick={() => handleClick(todo.id)}
+          data-completed={todo.completed ? true : undefined}
+        >
+          {todo.content}
+        </div>
       ))}
     </div>
   );
