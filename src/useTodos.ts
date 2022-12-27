@@ -8,6 +8,11 @@ export const useTodos = () => {
     setTodos([todo, ...todos]);
   };
 
+  const deleteTodo = (id: string) => {
+    const updatedTodos = todos.filter(todo => todo.id !== id)
+    setTodos(updatedTodos);
+  }
+
   const toggleTodo = (id: string) => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
@@ -22,6 +27,7 @@ export const useTodos = () => {
   return {
     todos,
     addTodo,
-    toggleTodo,
+    deleteTodo,
+    toggleTodo
   };
 };

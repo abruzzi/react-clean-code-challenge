@@ -43,4 +43,20 @@ describe("Todo application", () => {
     userEvent.click(item);
     expect(item).not.toHaveAttribute('data-completed');
   });
+
+  it("deletes an item", () => {
+    render(<Todo />);
+
+    const input = screen.getByTestId("todo-input");
+    userEvent.type(input, "buy some milk");
+    userEvent.type(input, "{enter}");
+
+    const item = screen.getByText("buy some milk");
+    expect(item).toBeInTheDocument();
+
+    const button = screen.getByTestId('delete');
+    userEvent.click(button)
+
+    expect(screen.queryByText("buy some milk")).not.toBeInTheDocument();
+  });
 });
