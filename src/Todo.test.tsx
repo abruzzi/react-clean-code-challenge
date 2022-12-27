@@ -59,4 +59,29 @@ describe("Todo application", () => {
 
     expect(screen.queryByText("buy some milk")).not.toBeInTheDocument();
   });
+
+  it('initialise the Todo with data', () => {
+    const todos = [
+      {
+        id: '1',
+        content: 'buy some milk',
+        completed: false
+      },
+      {
+        id: '2',
+        content: 'buy some orange',
+        completed: false
+      },
+      {
+        id: '3',
+        content: 'coffee coffee',
+        completed: true
+      },
+    ];
+
+    render(<Todo items={todos} />);
+
+    const item = screen.getByText("coffee coffee");
+    expect(item).toBeInTheDocument();
+  })
 });

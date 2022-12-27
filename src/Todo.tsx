@@ -1,24 +1,21 @@
 import { TodoInput } from "./TodoInput";
 import { useTodos } from "./useTodos";
+import { Item } from "./Item";
+import { TodoItem } from "./types";
 
-export function Todo() {
-  const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
+export function Todo({ items = [] }: { items?: TodoItem[] }) {
+  const { todos, addTodo, deleteTodo, toggleTodo } = useTodos(items);
 
   return (
     <div>
       <TodoInput onItemAdded={addTodo} />
       {todos.map((todo) => (
-        <div className="todo-item" key={todo.id}>
-          <span
-            onClick={() => toggleTodo(todo.id)}
-            data-completed={todo.completed ? true : undefined}
-          >
-            {todo.content}
-          </span>
-          <button data-testid="delete" onClick={() => deleteTodo(todo.id)}>
-            delete
-          </button>
-        </div>
+        <Item
+          key={todo.id}
+          todo={todo}
+          toggleTodo={toggleTodo}
+          deleteTodo={deleteTodo}
+        />
       ))}
     </div>
   );

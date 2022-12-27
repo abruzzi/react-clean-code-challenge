@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {TodoItem} from "./types";
 
-export const useTodos = () => {
-  const [todos, setTodos] = useState<TodoItem[]>([]);
+export const useTodos = (items: TodoItem[]) => {
+  const [todos, setTodos] = useState<TodoItem[]>(items);
 
   const addTodo = (todo: TodoItem) => {
     setTodos([todo, ...todos]);
