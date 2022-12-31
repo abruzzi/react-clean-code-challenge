@@ -2,8 +2,20 @@ import {render, screen, within} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {Todo} from "./Todo";
 import {TodoType} from "./types";
+import {Server} from "miragejs/server";
+import createMockServer from "./createMockServer";
+
+let server: Server;
 
 describe('Todo application', () => {
+  beforeEach(() => {
+    server = createMockServer();
+  })
+
+  afterEach(() => {
+    server.shutdown();
+  })
+
   it('add a todo to list', () => {
     render(<Todo />);
 
@@ -175,5 +187,13 @@ describe('Todo application', () => {
 
     expect(screen.getByText('buy some orange')).toBeInTheDocument();
     expect(screen.queryByText('buy some milk')).not.toBeInTheDocument();
+  })
+
+  it('fetch data from remote', async () => {
+    render(<Todo />);
+
+    const item = await screen.findByText("index redundant transmitter")
+    expect(item).toBeInTheDocument();
+    expect(item).toHaveAttribute('data-completed');
   })
 })

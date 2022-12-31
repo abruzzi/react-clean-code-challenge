@@ -1,6 +1,14 @@
-import { useMemo, useReducer } from "react";
+import {useEffect, useMemo, useReducer} from "react";
 import { CategoryType, TodoType } from "./types";
 import { todoReducer } from "./todoReducer";
+import axios, {AxiosResponse} from "axios";
+
+type RemoteTodo = {
+  createdAt: string;
+  text: string;
+  done: boolean;
+  id: string;
+}
 
 export const useTodos = (providedTodos: TodoType[] = []) => {
   const [{ todos, query, category }, dispatch] = useReducer(todoReducer, {
@@ -8,6 +16,26 @@ export const useTodos = (providedTodos: TodoType[] = []) => {
     category: "total",
     query: "",
   });
+
+  useEffect(() => {
+    const fetchRemoteTodos = async () => {
+      const todos = await axios
+        .get("https://5a2f495fa871f00012678d70.mockapi.io/api/todos")
+        .then((response: AxiosResponse<RemoteTodo[]>) =>
+          response.data.map((item) => {
+            return {
+              id: item.id,
+              content: item.text,
+              completed: item.done,
+            } as TodoType;
+          })
+        );
+
+      todos.forEach(todo => addTodo(todo))
+    }
+
+    fetchRemoteTodos();
+  }, [])
 
   const toggleTodo = (id: string) => {
     dispatch({ type: "TOGGLE", payload: { id } });

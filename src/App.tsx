@@ -5,22 +5,22 @@ import {TodoType} from "./types";
 
 const todos: TodoType[] = [
   {
-    id: '1',
+    id: 'id-1',
     content: "buy some milk",
     completed: false
   },
   {
-    id: '2',
+    id: 'id-2',
     content: "buy some orange",
     completed: true
   },
   {
-    id: '3',
+    id: 'id-3',
     content: "rewrite react code",
     completed: true
   },
   {
-    id: '4',
+    id: 'id-4',
     content: "rewrite react network request article",
     completed: false
   }
